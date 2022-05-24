@@ -6,11 +6,7 @@ Mardonov Bobir
 Functions for running a simple epidemiological simulation
 '''
 
-from hashlib import new
-import random
-import re
-from tracemalloc import start
-from turtle import circle
+
 import click
 
 # This seed should be used for debugging purposes only!  Do not refer
