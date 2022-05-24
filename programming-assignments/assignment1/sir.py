@@ -6,7 +6,11 @@ Mardonov Bobir
 Functions for running a simple epidemiological simulation
 '''
 
+from hashlib import new
 import random
+import re
+from tracemalloc import start
+from turtle import circle
 import click
 
 # This seed should be used for debugging purposes only!  Do not refer
@@ -78,6 +82,9 @@ def advance_person_at_position(city, position, days_contagious):
 
     Returns: (string) disease state of the person after one day
     '''
+    if city[position] == "V" : 
+        return "V" 
+
     if city[position].startswith("I"):
         if int(city[position][1:]) + 1 == days_contagious:
             return "R"
@@ -117,6 +124,8 @@ def simulate_one_day(starting_city, days_contagious):
     return [advance_person_at_position(starting_city,position, days_contagious) for position, _  in  enumerate(starting_city, start=0)]
 
 
+
+
 def run_simulation(starting_city, days_contagious,
                    random_seed=None, vaccine_effectiveness=0.0):
     '''
@@ -133,14 +142,17 @@ def run_simulation(starting_city, days_contagious,
     Returns tuple (list of strings, int): the final state of the city
       and the number of days actually simulated.
     '''
-    while True:
-        pass
-
     
+   
+   
+   
+   
+    n = 0
+    while 0!=count_infected(city=starting_city):
+        starting_city = simulate_one_day(starting_city=starting_city, days_contagious=days_contagious)
+        n+=1
 
-
-
-    return (None, None)
+    return (starting_city, n)
 
 
 def vaccinate_city(starting_city, vaccine_effectiveness):
@@ -156,11 +168,19 @@ def vaccinate_city(starting_city, vaccine_effectiveness):
     Returns:
       new_city (list): state of the city after vaccinating everyone in the city
     '''
+    new_city = starting_city[:]
+    for index, person in enumerate(starting_city):
 
-    # YOUR CODE HERE
+        if person == "S":
+            if vaccine_effectiveness >= random.random():
+                new_city[index] = "V"
 
-    # REPLACE None WITH THE APPROPRIATE LIST OF STRINGS
-    return None
+    print(new_city)
+    return new_city
+
+    
+    
+
 
 
 def calc_avg_days_to_zero_infections(
