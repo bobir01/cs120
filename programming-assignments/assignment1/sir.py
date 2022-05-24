@@ -31,9 +31,8 @@ def count_infected(city):
     # YOUR CODE HERE
 
     # REPLACE -1 WITH THE APPROPRIATE INTEGER
-    infectedNumber = [x for x in city if x.startswith("I")]
     
-    return len(infectedNumber)
+    return len([x for x in city if x.startswith("I")])
 
 def has_an_infected_neighbor(city, position):
     '''
@@ -142,8 +141,8 @@ def run_simulation(starting_city, days_contagious,
     Returns tuple (list of strings, int): the final state of the city
       and the number of days actually simulated.
     '''
-    
-   
+    random.seed(random_seed)
+    starting_city = vaccinate_city(starting_city, vaccine_effectiveness)
    
    
    
@@ -207,8 +206,19 @@ def calc_avg_days_to_zero_infections(
       infections
     '''
     assert num_trials > 0
+    total = 0
+    for i in range(num_trials):
+        total+=run_simulation(starting_city, days_contagious,random_seed, vaccine_effectiveness)[1]
+        if i>=1:
+            random_seed+=1
 
-    # YOUR CODE HERE
+    return total/num_trials
+
+
+
+
+
+
 
     # REPLACE -1.0 WITH THE APPROPRIATE FLOATING POINT VALUE
     return -1.0
